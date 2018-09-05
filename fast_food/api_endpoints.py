@@ -16,4 +16,8 @@ def add_order ():
     session['order_list'].append(order)
     return json.dumps(session['order_list'])
 
-
+@app.route('/orders' , methods=['GET'])
+def all_orders ():
+    session.clear()
+    session['order_list'] = models.orders
+    return json.dumps(session['order_list'])
