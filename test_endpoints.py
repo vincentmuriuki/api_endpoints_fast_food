@@ -1,60 +1,57 @@
-# API tests
+# tests
 import json
 import requests
 import fast_food
 
 client = fast_food.app.test_client()
 
-def test_retrieve_all_orders():
-    t = client.get('http://127.0.0.1:5000/orders')
-    assert t.status_code == 200
+def test_get_all_orders():
+    r = client.get('http://127.0.0.1:5000/orders')
+    assert r.status_code == 200
 
 
-def test_get_specific_order(request_mock):
+def test_get_one_order(requests_mock):
     data = {
-        "order_id" : 85,
-        "customer_id" : 4324,
-        "order_status" : ""
+        "id" : 11,
+        "customer_id" : 1254,
+        "status" : ""
     }
     client.post('http://127.0.0.1:5000/orders', json=data)
-    t = client.get('http://127.0.0.1:5000/orders/85')
-    assert t.status_code == 200
+    r = client.get('http://127.0.0.1:5000/orders/11')
+    assert r.status_code == 200
 
-    t_two = client.get('http://127.0.0.1:5000/orders/86')
-    assert t_two.status_code == 404
+    r_two = client.get('http://127.0.0.1:5000/orders/13')
+    assert r_two.status_code == 404
 
 
-def test_post_endpoint(request_mock):
+def test_post_order(requests_mock):
     data = {
-        "order_id" : 52,
-        "customer_id": 1995,
-        "status": ""
+        "id" : 12,
+        "customer_id" : 1254,
+        "status" : ""
     }
-
-    initial = client.get('http://127.0.0.1:5000/orders/52')
+    before = client.get('http://127.0.0.1:5000/orders/12')
     client.post('http://127.0.0.1:5000/orders', json=data)
-    final = client.get('http://127.0.0.1:5000/orders/52')
-    assert initial.status_code == 404
-    assert final.status_code == 200
+    after = client.get('http://127.0.0.1:5000/orders/12')
+    assert before.status_code == 404
+    assert after.status_code == 200
 
-def test_put(request_mock):
+
+def test_update_order(requests_mock):
     data = {
-        "order_id": 60,
-        "customer_id": 1999,
-        "status": ""
+        "id" : 54,
+        "customer_id" : 7895,
+        "status" : ""
     }
     update = {
-        "status": "completed"
+        "status" : "Completed"
     }
     updated = {
-        "order_id": 60,
-        "customer_id": 1999,
-        "status": "completed"
+        "id" : 14,
+        "customer_id" : 1254,
+        "status" : "Completed"
     }
-
     client.post('http://127.0.0.1:5000/orders', json=data)
-    client.put('http://127.0.0.1:5000/orders/60', json=data)
-    output = client.get('http://127.0.0.1:5000/orders/60')
-    assert json.loads(output.get_data()) == updated
-
-
+    client.put('http://127.0.0.1:5000/orders/14', json=update) 
+    res = client.get('http://127.0.0.1:5000/orders/14')
+    assert json.loads(res.get_data()) == updated
