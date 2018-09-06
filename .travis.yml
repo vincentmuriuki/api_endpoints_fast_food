@@ -11,4 +11,4 @@ install:
   - pip install Flask
   - pip install pylint
 
-script: python test_endpoints.py
+script: python tests.py
