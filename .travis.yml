@@ -1,0 +1,14 @@
+language: python
+python:
+  - "3.6"
+
+cache: pip
+install:
+  - pip install -r requirements.txt
+  - pip install requests-mock[fixture]
+  - pip install -U pytest
+  - pip install requests
+  - pip install Flask
+  - pip install pylint
+
+script: python test_endpoints.py

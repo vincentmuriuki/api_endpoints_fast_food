@@ -12,8 +12,8 @@ def add_order ():
     order = request.get_json(silent=True)
     session['order_list'] = models.orders
     for i in session['order_list']:
-        found = i.get(str('id'))
-        if order['id'] == found:
+        found = i.get(str('order_id'))
+        if order['order_id'] == found:
             return "Exists"
     session['order_list'].append(order)
     return json.dumps(session['order_list'])
@@ -30,14 +30,14 @@ def specific_order(order_id):
     session.clear()
     session['order_list'] = models.orders
     for j in session['order_list']:
-        order = j.get(str('id'))
+        order = j.get(str('order_id'))
         if order == order_id:
             return json.dumps(j)
         abort(404)
 
 @app.route('/orders/<int:order_id>', methods = ['PUT'])
 def update_order(order_id):
-    order = filter(lambda m: m['id'] == order_id, orders)
+    order = filter(lambda m: m['order_id'] == order_id, orders)
     if len(order) == 0:
         abort(404)
     if not request.json:
@@ -49,7 +49,7 @@ def update_order(order_id):
     if 'done' in request.json and type(request.json['done']) != unicode:
         abort(400)
 
-    order[0]['id'] = request.json.get('category', order[0]['category'])
+    order[0]['order_id'] = request.json.get('category', order[0]['category'])
     order[0]['client_id'] = request.json.get('food_type', order[0]['food_type'])
     order[0]['status'] = request.json.get('price', order[0]['price']) 
     session['order_list'].append(order)
