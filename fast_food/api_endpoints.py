@@ -34,3 +34,23 @@ def specific_order(order_id):
         if order == order_id:
             return json.dumps(j)
         abort(404)
+
+@app.route('/orders/<int:order_id>', methods = ['PUT'])
+def update_order(order_id):
+    order = filter(lambda m: m['id'] == order_id, orders)
+    if len(order) == 0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if 'category' in request.json and type(request.json['category']) != unicode:
+        abort(400)
+    if 'food_type' in request.json and type(request.json['food_type']) != unicode:
+        abort(400) 
+    if 'done' in request.json and type(request.json['done']) != unicode:
+        abort(400)
+
+    order[0]['id'] = request.json.get('category', order[0]['category'])
+    order[0]['client_id'] = request.json.get('food_type', order[0]['food_type'])
+    order[0]['status'] = request.json.get('price', order[0]['price']) 
+    session['order_list'].append(order)
+    return json.dumps(session['order_list'])
