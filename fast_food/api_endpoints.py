@@ -6,13 +6,13 @@ from fast_food import models
 from fast_food.models import orders
 
 
-@app.route('/orders' , methods=['GET'])
+@app.route('/api/v1/orders' , methods=['GET'])
 def all_orders ():
     session.clear()
     session['order_list'] = models.orders
     return json.dumps(session['order_list'])
 
-@app.route('/orders/<int:order_id>' , methods=['GET'])
+@app.route('/api/v1/orders/<int:order_id>' , methods=['GET'])
 def specific_order (order_id):
     session.clear()
     session['order_list'] = models.orders
@@ -22,7 +22,7 @@ def specific_order (order_id):
             return json.dumps(i)
     abort(404)
 
-@app.route('/orders', methods=['POST'])
+@app.route('/api/v1/orders', methods=['POST'])
 def add_order ():
     order = request.get_json(silent=True)
     session['order_list'] = models.orders
