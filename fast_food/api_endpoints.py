@@ -49,8 +49,8 @@ def update_order(order_id):
     if 'done' in request.json and type(request.json['done']) is not bool:
         abort(400)
 
-    order[0]['id'] = request.json.get('category', order[0]['category'])
-    order[0]['client_id'] = request.json.get('food_type', order[0]['food_type'])
-    order[0]['status'] = request.json.get('price', order[0]['price']) 
-    session['order_list'].append(order)
+    # order[0]['id'] = request.json.get('category', order[0]['category'])
+    # order[1]['client_id'] = request.json.get('food_type', order[0]['food_type'])
+    # order[2]['status'] = request.json.get('price', order[0]['price']) 
+    # session['order_list'].append(order)
     return json.dumps(session['order_list'])
